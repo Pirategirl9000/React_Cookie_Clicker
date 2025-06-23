@@ -13,7 +13,6 @@ export default function App() {
 function Game() {
   const [cookies, setCookies] = useState(0);
   const [clickModifier, setClickModifier] = useState(1);
-  const [CPS, setCPS] = useState(0);
 
   const [clickers, setClickers] = useState({
     count: 0,
@@ -98,8 +97,15 @@ function Game() {
           grandmas.count * 5 * grandmas.multiplier
       );
     }, 1000); // end of setInterval
-    return () => clearInterval(interval);
-  }, [clickers, grandmas]);
+ 
+    /*
+    * Cleanup function
+    * When a dependency changes then it will start by cleaning up by running the below function
+    * Then it will redefine the array
+    */
+
+    return () => clearInterval(interval);  // get rid of old interval to make new one
+  }, [clickers, grandmas]);  // Dependency array, when these change the useEffect gets called
 
   return (
     <>
