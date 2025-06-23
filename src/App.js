@@ -47,7 +47,7 @@ function Game() {
         setClickers((clickers) => ({
           ...clickers, // brings over the multiplier
           count: clickers.count + 1,
-          price: getNewPrice(), // (clicker.count + 1) to signify the clicker it is adding
+          price: getNewPrice(),
         }));
 
         setCookies(cookies - clickers.price);
