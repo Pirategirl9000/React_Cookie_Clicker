@@ -2,3 +2,15 @@
   font-family: sans-serif;
   text-align: center;
 }
+
+@keyframes pulse {
+  50% {scale: 0.9}
+  100% {scale: 1}
+}
+
+.cookie {
+  animation-duration: 250ms;
+  animation-name: pulse;
+  border: none;
+  background: none;
+}

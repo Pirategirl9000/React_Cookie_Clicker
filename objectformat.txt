@@ -1,0 +1,33 @@
+This file is to provide a basic template for the creation of new CPS
+producing objects at a swift speed using find and replace methods
+
+Props setup
+const [INSTANCE, setINSTANCE] = useState({
+    count: 0,
+    price: INITIALPRICE,
+    multiplier: 1
+})
+
+function OBJECT() {
+    let getNewPrice = function () {
+      return EXPRESSION
+    };
+
+    function handleClick() {
+      if (cookies >= INSTANCE.price) {
+        setINSTANCE((INSTANCE) => ({
+          ...INSTANCE,
+          count: INSTANCE.count + 1,
+          price: getNewPrice(),
+        }));
+
+        setCookies(cookies - INSTANCE.price);
+      }
+    }
+
+    return (
+      <button className="INSTANCE" onClick={handleClick}>
+        {INSTANCE.price}
+      </button>
+    );
+  }

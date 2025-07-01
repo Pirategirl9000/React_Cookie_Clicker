@@ -1,6 +1,7 @@
 import "./styles.css";
 import { useState } from "react";
 import { useEffect } from "react";
+import cookieImg from "./cookie.png";
 
 export default function App() {
   return (
@@ -10,19 +11,36 @@ export default function App() {
   );
 }
 
+/**
+ * Serves as the root directory for the game
+ * @returns JSX code for rendering screen
+ */
 function Game() {
   const [cookies, setCookies] = useState(0);
   const [clickModifier, setClickModifier] = useState(1);
+  const SCALINGFACTOR = 1.1;
+  const GROWTHMULTIPLIER = 1.1;
+
+  const cpsDict = {  // defines the cookies per second of each producer
+    clickers: 1,
+    grandmas: 5
+  } 
+
+  const basePriceDict = {  // defines the base price of each producer
+    clickers: 5,
+    grandmas: 25
+  }
+  const getNewPrice = (basePrice, CPS, quantity) => {return (basePrice * ((++quantity * CPS) ** SCALINGFACTOR) * (GROWTHMULTIPLIER ** quantity))};
 
   const [clickers, setClickers] = useState({
     count: 0,
-    price: 5,
+    price: basePriceDict.clickers,
     multiplier: 1,
   });
 
   const [grandmas, setGrandmas] = useState({
     count: 0,
-    price: 25,
+    price: basePriceDict.grandmas,
     multiplier: 1,
   });
 
@@ -32,22 +50,21 @@ function Game() {
         className="cookie"
         onClick={() => setCookies(cookies + clickModifier)}
       >
-        {cookies}
+        <img src={cookieImg} style={{width: 100 + "px", height: 100 + "px"}}/>
       </button>
     );
   }
 
   function Clicker() {
-    let getNewPrice = function () {
-      return 3 ** (clickers.count + 1) + 4;
-    };
-
     function handleClick() {
+      console.log(basePriceDict.clickers);
+      console.log(cpsDict.clickers);
+      console.log(clickers.count);
       if (cookies >= clickers.price) {
         setClickers((clickers) => ({
           ...clickers, // brings over the multiplier
           count: clickers.count + 1,
-          price: getNewPrice(),
+          price: getNewPrice(basePriceDict.clickers, cpsDict.clickers, clickers.count),
         }));
 
         setCookies(cookies - clickers.price);
@@ -62,16 +79,12 @@ function Game() {
   }
 
   function Grandma() {
-    let getNewPrice = function () {
-      return 5 ** (grandmas.count + 1) + 24;
-    };
-
     function handleClick() {
       if (cookies >= grandmas.price) {
         setGrandmas((grandmas) => ({
           ...grandmas,
           count: grandmas.count + 1,
-          price: getNewPrice(),
+          price: getNewPrice(basePriceDict.grandmas, cpsDict.grandmas, grandmas.count),
         }));
 
         setCookies(cookies - grandmas.price);
@@ -94,7 +107,7 @@ function Game() {
         (prevCookies) =>
           prevCookies +
           clickers.count * clickers.multiplier +
-          grandmas.count * 5 * grandmas.multiplier
+          grandmas.count * cpsDict.grandmas * grandmas.multiplier
       );
     }, 1000); // end of setInterval
  
@@ -109,9 +122,19 @@ function Game() {
 
   return (
     <>
+      <h3>Cookies: {cookies}</h3>
       <Cookie />
-      <Clicker />
-      <Grandma />
+      <br/>
+      <br/>
+      <ul style={{listStyleType: "none"}}>
+      <li>Buy Clicker: <Clicker /></li>
+      <li>Buy Grandma: <Grandma /></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      
+      </ul>
     </>
   );
 }
