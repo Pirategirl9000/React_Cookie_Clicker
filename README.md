@@ -1,2 +1,1 @@
-# React_Cookie_Clicker
-Created with CodeSandbox
+# Written by Violet French
